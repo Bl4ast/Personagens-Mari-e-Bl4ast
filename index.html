@@ -564,6 +564,23 @@
       box-shadow: 0 0 25px rgba(255,255,255,.12);
     }
 
+    /* Tamanho das Imagens */
+    .ref-box {
+        width: 100%;
+        height: 300px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    }
+
+    .ref-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: 16px;
+    }
+
     @media (max-width: 850px) {
       .cards,
       .grid {
@@ -589,7 +606,8 @@
         padding-left: 0;
         text-align: center;
       }
-    }
+
+  
   </style>
 </head>
 <body>
@@ -718,7 +736,7 @@
         <section class="panel">
           <h3>Referência de aparência</h3>
           <div class="ref-box">
-            Colocar o desenho lindo da mari
+            <img src="Perso Blast.jpg" alt="Referência" class="ref-img">
           </div>
         </section>
 
