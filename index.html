@@ -464,9 +464,19 @@
 
     .panel p,
     .panel li {
-      color: #d9e4ff;
-      line-height: 1.75;
-    }
+    font-family: 'Inter', sans-serif; 
+  color: #fff; 
+  text-shadow: 0 0 10px var(--profileColor), 0 0 20px var(--profileColor); 
+  font-weight: 800; 
+  line-height: 1.75;
+
+}
+
+
+.panel li::marker {
+  color: var(--profileColor);
+  text-shadow: 0 0 8px var(--profileColor);
+}
 
     .panel ul {
       padding-left: 18px;
@@ -810,7 +820,7 @@
 
         <article class="character-card pink-card" onclick="openPage('dela')">
           <div class="character-info">
-            <small class="editable" id="card-dela-tag">Mariroblox</small>
+            <small class="" id="card-dela-tag">Mariroblox</small>
             <h3 class="editable" id="card-dela-name">Irmã</h3>
             <p class="editable" id="card-dela-desc">
               
