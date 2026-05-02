@@ -507,6 +507,10 @@
       text-align: center;
       padding: 70px 20px 40px;
       color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
     }
 
     .blue-profile {
@@ -566,19 +570,19 @@
 
     /* Tamanho das Imagens */
     .ref-box {
-        width: 100%;
-        height: 300px; 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
+      width: 100%;
+      height: 300px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
     .ref-img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: 16px;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 16px;
     }
 
     @media (max-width: 850px) {
@@ -606,8 +610,154 @@
         padding-left: 0;
         text-align: center;
       }
+    }
 
-  
+    /* =========================================================
+       NOVOS ESTILOS PARA O MODO EDIÇÃO E LOGIN
+       ========================================================= */
+
+    /* Estilos do Modal Genérico */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-box {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: 30px;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(84, 184, 255, 0.15);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+    .modal-overlay.active .modal-box {
+      transform: translateY(0);
+    }
+    .modal-box h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .input-group {
+      margin-bottom: 15px;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.3);
+      color: white;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .input-group input:focus {
+      border-color: var(--blue);
+      background: rgba(0,0,0,0.5);
+    }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 25px;
+    }
+    .modal-actions button {
+      flex: 1;
+    }
+    .close-modal-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .close-modal-btn:hover {
+      color: white;
+    }
+
+    /* Estilos do Modo Edição */
+    .editable {
+      transition: all 0.2s ease;
+    }
+    .editable.editing {
+      border: 1px dashed rgba(255, 255, 255, 0.4);
+      border-radius: 8px;
+      padding: 4px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      cursor: text;
+    }
+    .editable.editing:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--blue);
+    }
+    .editable.editing:focus {
+      outline: none;
+      background: rgba(0, 0, 0, 0.4);
+      border-color: var(--pink);
+      box-shadow: 0 0 15px rgba(255, 123, 220, 0.2);
+    }
+
+    /* Floating Panel Edit Mode */
+    .edit-control-panel {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: rgba(20, 25, 45, 0.9);
+      border: 1px solid var(--blue);
+      backdrop-filter: blur(10px);
+      padding: 12px 24px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      z-index: 1000;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 20px rgba(84, 184, 255, 0.3);
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .edit-control-panel.active {
+      transform: translateX(-50%) translateY(0);
+    }
+    .edit-control-panel span {
+      font-weight: 600;
+      color: var(--blue);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .edit-control-panel span::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: var(--pink);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--pink);
+      animation: pulseStar 1.5s infinite;
+    }
+
   </style>
 </head>
 <body>
@@ -622,9 +772,9 @@
 
   <header id="home">
     <section class="hero">
-      <div class="badge"><span></span> Celestium Signa • SMP </div>
-      <h1>Duas <span class="gradient-text">Estrelas</span><br/>Caíram do Céu</h1>
-      <p class="subtitle">
+      <div class="badge"><span class="editable"></span> <span class="editable">Celestium Signa • SMP</span> </div>
+      <h1 class="editable">Duas <span class="gradient-text">Estrelas</span><br/>Caíram do Céu</h1>
+      <p class="subtitle editable">
         Mari POR FAVOR ESCREVA UM TEXTO BONITO AQUI
       </p>
 
@@ -638,16 +788,16 @@
   <main>
     <section id="personagens" class="home-page page active">
       <div class="section-title">
-        <h2>Escolha uma estrela</h2>
-        <p>Clique em um personagem para abrir a página dele.</p>
+        <h2 class="editable">Escolha uma estrela</h2>
+        <p class="editable">Clique em um personagem para abrir a página dele.</p>
       </div>
 
       <div class="cards">
         <article class="character-card blue-card" onclick="openPage('meu')">
           <div class="character-info">
-            <small>Personagem do Bl4ast</small>
-            <h3>Irmão</h3>
-            <p>
+            <small class="editable">Personagem do Bl4ast</small>
+            <h3 class="editable">Irmão</h3>
+            <p class="editable">
               Mari escreva um texto aqui para mim tbm.
             </p>
             <button class="btn blue">Abrir página</button>
@@ -656,9 +806,9 @@
 
         <article class="character-card pink-card" onclick="openPage('dela')">
           <div class="character-info">
-            <small>Mariroblox</small>
-            <h3>Irmã</h3>
-            <p>
+            <small class="editable">Mariroblox</small>
+            <h3 class="editable">Irmã</h3>
+            <p class="editable">
               Mari seu texto aqui tbm!
             </p>
             <button class="btn pink">Abrir página</button>
@@ -670,14 +820,14 @@
     <!-- PÁGINA DO MEU PERSONAGEM -->
     <section id="meu" class="page blue-profile">
       <div class="topbar">
-        <strong>✦ Estrela Azul</strong>
+        <strong class="editable">✦ Estrela Azul</strong>
         <button class="btn" onclick="openPage('home')">Voltar aos personagens</button>
       </div>
 
       <div class="profile-hero">
         <div>
-          <h2>Nome do Meu Personagem</h2>
-          <p>
+          <h2 class="editable">Nome do Meu Personagem</h2>
+          <p class="editable">
             Me ajudar com uma frase que signifique o meu personagem
           </p>
         </div>
@@ -685,29 +835,17 @@
 
       <div class="grid">
         <section class="panel lore-panel">
-          <h3>Lore</h3>
+          <h3 class="editable">Lore</h3>
 
-          <div class="lore-text" id="loreMeu">
+          <div class="lore-text editable" id="loreMeu">
             <p>
               TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
             TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
             TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
             TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
             TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-          <p>
+            </p>
+            <p>
              TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO
             </p>
           </div>
@@ -718,14 +856,14 @@
         </section>
 
         <section class="panel">
-          <h3>Playlist do Spotify OBS: Ta assim pq é Texte! </h3>
+          <h3 class="editable">Playlist do Spotify OBS: Ta assim pq é Texte! </h3>
           <!-- Colar a parada aqui -->
           <iframe class="spotify" src="https://open.spotify.com/embed/album/3SDU0tsnoMO841qeOHlP8B?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
 
         <section class="panel">
-          <h3>Curiosidades</h3>
-          <ul>
+          <h3 class="editable">Curiosidades</h3>
+          <ul class="editable">
             <li>Fã da Mariroblox.</li>
             <li>Mono Riven no LOL.</li>
             <li>Ama Rock e Funk.</li>
@@ -734,15 +872,15 @@
         </section>
 
         <section class="panel">
-          <h3>Referência de aparência</h3>
-          <div class="ref-box">
+          <h3 class="editable">Referência de aparência</h3>
+          <div class="ref-box editable">
             <img src="Perso Blast.jpg" alt="Referência" class="ref-img">
           </div>
         </section>
 
         <section class="panel">
-          <h3>Paleta / Vibe</h3>
-          <div class="tags">
+          <h3 class="editable">Paleta / Vibe</h3>
+          <div class="tags editable">
             <span class="tag">Azul celestial</span>
             <span class="tag">Preto profundo</span>
             <span class="tag">Branco estelar</span>
@@ -757,14 +895,14 @@
     <!-- PÁGINA DA PERSONAGEM DA MARI-->
     <section id="dela" class="page pink-profile">
       <div class="topbar">
-        <strong>✦ Estrela Rosa</strong>
+        <strong class="editable">✦ Estrela Rosa</strong>
         <button class="btn" onclick="openPage('home')">Voltar aos personagens</button>
       </div>
 
       <div class="profile-hero">
         <div>
-          <h2>Nome da Personagem da MARI</h2>
-          <p>
+          <h2 class="editable">Nome da Personagem da MARI</h2>
+          <p class="editable">
             ESCREVA ALGO AQUI SEU
           </p>
         </div>
@@ -772,14 +910,14 @@
 
       <div class="grid">
         <section class="panel lore-panel">
-          <h3>Lore</h3>
+          <h3 class="editable">Lore</h3>
 
-          <div class="lore-text" id="loreMari">
+          <div class="lore-text editable" id="loreMari">
             <p>
               TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-          </p>
-          <p>
-            TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO
+            </p>
+            <p>
+              TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO
             </p>
           </div>
 
@@ -789,14 +927,14 @@
         </section>
 
         <section class="panel">
-          <h3>Playlist do Spotify OBS: Teste depois isso vai mudar</h3>
+          <h3 class="editable">Playlist do Spotify OBS: Teste depois isso vai mudar</h3>
           <!-- Spo da Mari -->
           <iframe class="spotify" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6ziVCJnEm59?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
 
         <section class="panel">
-          <h3>Curiosidades</h3>
-          <ul>
+          <h3 class="editable">Curiosidades</h3>
+          <ul class="editable">
             <li>Ama muito seu amigo Bl4ast.</li>
             <li>Sabe desenhar.</li>
             <li>Joga LOL.</li>
@@ -805,15 +943,15 @@
         </section>
 
         <section class="panel">
-          <h3>Referência de aparência</h3>
-          <div class="ref-box">
+          <h3 class="editable">Referência de aparência</h3>
+          <div class="ref-box editable">
             Desenho Lindo da mari
           </div>
         </section>
 
         <section class="panel">
-          <h3>Paleta / Vibe</h3>
-          <div class="tags">
+          <h3 class="editable">Paleta / Vibe</h3>
+          <div class="tags editable">
             <span class="tag">Rosa cósmico</span>
             <span class="tag">Branco brilhante</span>
             <span class="tag">Preto céu</span>
@@ -827,16 +965,57 @@
   </main>
 
   <footer>
-    Informações dos nossos personagens ✦
+    <p>Informações dos nossos personagens ✦</p>
+    <!-- Botão de Administração que abre o Modal de Login -->
+    <button class="btn" onclick="openLoginModal()" style="padding: 8px 16px; font-size: 0.8rem; background: rgba(255,255,255,0.05);">Painel de Edição</button>
   </footer>
 
+  <!-- MODAL DE LOGIN -->
+  <div id="loginModal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="close-modal-btn" onclick="closeModals()">&times;</button>
+      <h3>Acesso Restrito</h3>
+      <div class="input-group">
+        <input type="text" id="usernameInput" placeholder="Usuário">
+      </div>
+      <div class="input-group">
+        <input type="password" id="passwordInput" placeholder="Senha">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModals()">Cancelar</button>
+        <button class="btn blue" onclick="verifyLogin()">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE MENSAGENS (Substitui o alert padrão) -->
+  <div id="msgModal" class="modal-overlay" style="z-index: 10000;">
+    <div class="modal-box" style="text-align: center;">
+      <h3 id="msgTitle">Mensagem</h3>
+      <p id="msgText" style="margin-bottom: 25px; color: var(--muted);"></p>
+      <button class="btn" onclick="closeMsgModal()">OK</button>
+    </div>
+  </div>
+
+  <!-- PAINEL FLUTUANTE MODO EDIÇÃO -->
+  <div id="editControlPanel" class="edit-control-panel">
+    <span>Modo Edição Ativo</span>
+    <button class="btn pink" onclick="toggleEditMode()" style="padding: 8px 16px; font-size: 0.85rem;">Salvar & Sair</button>
+  </div>
+
   <script>
+    /* ==============================================
+       LÓGICA ORIGINAL DO SITE
+       ============================================== */
     function showCharacters() {
       document.querySelector('main').style.display = 'block';
       document.querySelector('#personagens').scrollIntoView({ behavior: 'smooth' });
     }
 
     function openPage(page) {
+      // Se estiver editando, não deixa navegar pelo click nos cards para evitar bugs
+      if(isEditModeActive) return; 
+
       document.querySelectorAll('.page').forEach(section => section.classList.remove('active'));
       const header = document.querySelector('header');
 
@@ -880,9 +1059,151 @@
       }
     }
 
+    /* ==============================================
+       NOVA LÓGICA: CACHE DE 3 DIAS E BACKUP 6H
+       ============================================== */
+    const CACHE_EXPIRY = 3 * 24 * 60 * 60 * 1000; // 3 dias em milissegundos
+    const BACKUP_INTERVAL = 6 * 60 * 60 * 1000; // 6 horas em milissegundos
+
+    function saveToCache(isManual = false) {
+      const editables = document.querySelectorAll('.editable');
+      const data = Array.from(editables).map(el => el.innerHTML);
+      const now = Date.now();
+
+      const cacheData = {
+        timestamp: now,
+        content: data
+      };
+
+      // Salva o cache principal (sobrevive ao F5)
+      localStorage.setItem('blast_mari_signa_data', JSON.stringify(cacheData));
+
+      // Lógica de Backup (a cada 6 horas)
+      const lastBackupStr = localStorage.getItem('blast_mari_signa_backup_time');
+      const lastBackupTime = lastBackupStr ? parseInt(lastBackupStr) : 0;
+
+      if (now - lastBackupTime >= BACKUP_INTERVAL) {
+        localStorage.setItem('blast_mari_signa_backup', JSON.stringify(cacheData));
+        localStorage.setItem('blast_mari_signa_backup_time', now.toString());
+        console.log("Backup automático realizado.");
+      }
+      
+      if (isManual) {
+        showMessage("Salvo!", "Suas edições estão no Cache (duram 3 dias e resistem ao F5).");
+      }
+    }
+
+    function loadFromCache() {
+      const cacheStr = localStorage.getItem('blast_mari_signa_data');
+      if (cacheStr) {
+        const cacheData = JSON.parse(cacheStr);
+        const now = Date.now();
+
+        // Verifica se passou dos 3 dias
+        if (now - cacheData.timestamp <= CACHE_EXPIRY) {
+          const editables = document.querySelectorAll('.editable');
+          cacheData.content.forEach((html, index) => {
+            if (editables[index]) {
+              editables[index].innerHTML = html;
+            }
+          });
+        } else {
+          // Passou de 3 dias, limpa o cache
+          localStorage.removeItem('blast_mari_signa_data');
+        }
+      }
+    }
+
+    let saveTimeout;
+    function autoSave() {
+      clearTimeout(saveTimeout);
+      // Salva automaticamente 1 segundo após você parar de digitar
+      saveTimeout = setTimeout(() => saveToCache(false), 1000);
+    }
+
+    // Checa a cada 1 hora se precisa fazer o backup
+    setInterval(() => {
+        saveToCache(false);
+    }, 60 * 60 * 1000);
+
     window.addEventListener('load', () => {
+      loadFromCache(); // Carrega os dados salvos antes da animação
       setTimeout(startIntro, 350);
     });
+
+    /* ==============================================
+       NOVA LÓGICA: LOGIN E MODO EDIÇÃO
+       ============================================== */
+    
+    // Credenciais Padrão (Você pode alterar aqui)
+    const ADMIN_USER = "admin";
+    const ADMIN_PASS = "admin123";
+    
+    let isEditModeActive = false;
+
+    function showMessage(title, text) {
+      document.getElementById('msgTitle').innerText = title;
+      document.getElementById('msgText').innerText = text;
+      document.getElementById('msgModal').classList.add('active');
+    }
+
+    function closeMsgModal() {
+      document.getElementById('msgModal').classList.remove('active');
+    }
+
+    function openLoginModal() {
+      if (isEditModeActive) {
+        showMessage("Aviso", "O modo de edição já está ativo.");
+        return;
+      }
+      document.getElementById('loginModal').classList.add('active');
+      document.getElementById('usernameInput').value = "";
+      document.getElementById('passwordInput').value = "";
+    }
+
+    function closeModals() {
+      document.getElementById('loginModal').classList.remove('active');
+    }
+
+    function verifyLogin() {
+      const user = document.getElementById('usernameInput').value;
+      const pass = document.getElementById('passwordInput').value;
+
+      if (user === ADMIN_USER && pass === ADMIN_PASS) {
+        closeModals();
+        toggleEditMode();
+        showMessage("Acesso Liberado!", "Pode editar à vontade! O site salvará automaticamente enquanto você digita para você não perder nada se der F5.");
+      } else {
+        showMessage("Erro", "Usuário ou senha incorretos.");
+      }
+    }
+
+    function toggleEditMode() {
+      isEditModeActive = !isEditModeActive;
+      const panel = document.getElementById('editControlPanel');
+      const editables = document.querySelectorAll('.editable');
+
+      if (isEditModeActive) {
+        panel.classList.add('active');
+        editables.forEach(el => {
+          el.classList.add('editing');
+          // Permite editar o conteúdo interno do HTML
+          el.contentEditable = "true"; 
+          // Ativa o Auto-Save
+          el.addEventListener('input', autoSave);
+        });
+      } else {
+        panel.classList.remove('active');
+        editables.forEach(el => {
+          el.classList.remove('editing');
+          el.contentEditable = "false";
+          el.removeEventListener('input', autoSave);
+        });
+        // Salva manualmente ao fechar o painel
+        saveToCache(true);
+      }
+    }
+
   </script>
 </body>
 </html>
