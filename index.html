@@ -89,6 +89,34 @@
       to { transform: translate(2%, 2%) scale(1.05); }
     }
 
+
+    .panel-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px; /* Margem interna para o personagem não encostar na borda */
+    box-sizing: border-box;
+}
+
+    model-viewer {
+    width: 100%;
+    height: 400px; /* Altura fixa para não empurrar tudo para baixo */
+    max-width: 100%;
+    background-color: transparent;
+    --poster-color: transparent;
+    border-radius: 12px;
+}
+
+
+    .panel-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: contain; /* Faz a imagem caber inteira no espaço */
+}
+
     .falling-star {
       position: fixed;
       top: -120px;
@@ -498,6 +526,8 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      padding: 20px;
+      box-sizing: border-box;
       border: 1px dashed rgba(255,255,255,.25);
       border-radius: 22px;
       background: rgba(0,0,0,.18);
@@ -1061,52 +1091,29 @@
     const models = {};
 
     function init3D(containerId, modelUrl) {
-      const container = document.getElementById(containerId);
-      if(!container) return;
-      container.innerHTML = ""; 
+  const container = document.getElementById(containerId);
+  if(!container) return;
+  container.innerHTML = ""; 
 
-      if (modelUrl.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i)) {
-        const img = document.createElement('img');
-        img.src = modelUrl;
-        img.className = 'ref-img';
-        container.appendChild(img);
-        return;
-      }
+  // Se for imagem
+  if (modelUrl.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i)) {
+    container.innerHTML = `<img src="${modelUrl}" alt="Preview" style="max-width:100%; height:auto;">`;
+    return;
+  }
 
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-      camera.position.set(0, 1, 5);
-
-      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(renderer.domElement);
-
-      const light = new THREE.AmbientLight(0xffffff, 1);
-      scene.add(light);
-      const dirLight = new THREE.DirectionalLight(0xffffff, 2);
-      dirLight.position.set(5, 5, 5);
-      scene.add(dirLight);
-
-      const controls = new THREE.OrbitControls(camera, renderer.domElement);
-      controls.enableDamping = true;
-
-      const loader = new THREE.GLTFLoader();
-      loader.load(modelUrl, (gltf) => {
-        const model = gltf.scene;
-        const box = new THREE.Box3().setFromObject(model);
-        const center = box.getCenter(new THREE.Vector3());
-        model.position.sub(center);
-        scene.add(model);
-      }, undefined, (e) => console.error("Erro no 3D:", e));
-
-      function animate() {
-        requestAnimationFrame(animate);
-        controls.update();
-        renderer.render(scene, camera);
-      }
-      animate();
-      models[containerId] = { renderer, camera };
-    }
+  // Se for 3D (Usando o model-viewer com bounds="tight" para não vazar)
+  container.innerHTML = `
+    <model-viewer 
+      src="${modelUrl}" 
+      auto-rotate 
+      camera-controls 
+      shadow-intensity="1" 
+      autoplay 
+      bounds="tight" 
+      camera-orbit="0deg 75deg auto"
+      style="width: 100%; height: 100%;">
+    </model-viewer>`;
+}
 
     /* ==============================================
        LÓGICA SUPABASE (SAVE / LOAD)
@@ -1118,25 +1125,31 @@
       data.forEach(row => {
         const el = document.getElementById(row.element_id);
         if (el) {
-          // Se for o campo onde deve aparecer o modelo 3D
-          if (row.element_id.includes('model-container')) { 
-            const url = row.content.trim();
-            // Verifica se é um link de modelo (contém .glb ou .gltf)
-            if (url.includes('.glb') || url.includes('.gltf')) {
-              el.innerHTML = `
-                <model-viewer 
-                  src="${url}" 
-                  auto-rotate 
-                  camera-controls 
-                  shadow-intensity="1" 
-                  autoplay 
-                  style="width: 100%; height: 400px;">
-                </model-viewer>`;
-            } else {
-              el.innerHTML = `<img src="${url}" alt="Preview">`;
-            }
+          // Ajuste para identificar os containers de 3D (ex: container-meu, container-dela)
+          if (row.element_id.startsWith('url-')) {
+             const targetId = row.element_id.replace('url-', 'container-');
+             const targetEl = document.getElementById(targetId);
+             
+             if (targetEl) {
+                const url = row.content.trim();
+                if (url.includes('.glb') || url.includes('.gltf')) {
+                  targetEl.innerHTML = `
+                    <model-viewer 
+                      src="${url}" 
+                      auto-rotate 
+                      camera-controls 
+                      shadow-intensity="1" 
+                      autoplay 
+                      bounds="tight" 
+                      camera-orbit="0deg 75deg auto"
+                      style="width: 100%; height: 100%;">
+                    </model-viewer>`;
+                } else {
+                  targetEl.innerHTML = `<img src="${url}" alt="Preview" style="max-width:100%; height:auto;">`;
+                }
+             }
           } 
-          // Para os outros textos (Lore, Curiosidades)
+          // Mantém a lógica para os outros textos (Lore, Curiosidades)
           else {
             el.innerHTML = row.content;
           }
@@ -1144,7 +1157,7 @@
       });
     }
   } catch (e) { 
-    console.warn("Supabase ainda não configurado corretamente.", e); 
+    console.warn("Erro ao carregar dados:", e); 
   }
 }
 
