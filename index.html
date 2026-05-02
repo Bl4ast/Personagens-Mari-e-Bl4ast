@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-PT">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blast e Mari Signa</title>
+  <title>Celestium Signa</title>
+
+  <!-- Bibliotecas para Modelos 3D (Three.js) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600;800&display=swap');
@@ -167,12 +172,13 @@
       margin-bottom: 22px;
     }
 
-    .badge span {
+    .badge span.dot {
       width: 9px;
       height: 9px;
       border-radius: 50%;
       background: #fff;
       box-shadow: 0 0 18px #fff;
+      display: inline-block;
     }
 
     h1 {
@@ -476,15 +482,29 @@
     }
 
     .ref-box {
-      min-height: 240px;
-      display: grid;
-      place-items: center;
-      text-align: center;
+      width: 100%;
+      height: 300px; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
       border: 1px dashed rgba(255,255,255,.25);
       border-radius: 22px;
       background: rgba(0,0,0,.18);
       color: var(--muted);
-      padding: 24px;
+    }
+
+    /* Input escondido para o link do Modelo 3D */
+    .model-url-input {
+      display: none;
+      font-size: 12px;
+      margin-bottom: 10px;
+      padding: 10px;
+      background: rgba(0,0,0,0.5);
+      border: 1px dashed var(--blue);
+      border-radius: 8px;
+      color: var(--blue);
+      word-break: break-all;
     }
 
     .tags {
@@ -568,23 +588,6 @@
       box-shadow: 0 0 25px rgba(255,255,255,.12);
     }
 
-    /* Tamanho das Imagens */
-    .ref-box {
-      width: 100%;
-      height: 300px; 
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .ref-img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      border-radius: 16px;
-    }
-
     @media (max-width: 850px) {
       .cards,
       .grid {
@@ -613,10 +616,9 @@
     }
 
     /* =========================================================
-       NOVOS ESTILOS PARA O MODO EDIÇÃO E LOGIN
+       ESTILOS PARA O MODO EDIÇÃO E LOGIN
        ========================================================= */
 
-    /* Estilos do Modal Genérico */
     .modal-overlay {
       position: fixed;
       inset: 0;
@@ -772,7 +774,7 @@
 
   <header id="home">
     <section class="hero">
-      <div class="badge"><span class="editable"></span> <span class="editable">Celestium Signa • SMP</span> </div>
+      <div class="badge"><span class="dot"></span> <span class="editable">Celestium Signa • SMP</span> </div>
       <h1 class="editable">Duas <span class="gradient-text">Estrelas</span><br/>Caíram do Céu</h1>
       <p class="subtitle editable">
         Mari POR FAVOR ESCREVA UM TEXTO BONITO AQUI
@@ -840,10 +842,6 @@
           <div class="lore-text editable" id="loreMeu">
             <p>
               TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
             </p>
             <p>
              TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO
@@ -856,8 +854,7 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Playlist do Spotify OBS: Ta assim pq é Texte! </h3>
-          <!-- Colar a parada aqui -->
+          <h3 class="editable">Playlist do Spotify OBS: Ta assim pq é Teste! </h3>
           <iframe class="spotify" src="https://open.spotify.com/embed/album/3SDU0tsnoMO841qeOHlP8B?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
 
@@ -872,9 +869,11 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Referência de aparência</h3>
-          <div class="ref-box editable">
-            <img src="Perso Blast.jpg" alt="Referência" class="ref-img">
+          <h3 class="editable">Referência de aparência (3D)</h3>
+          <!-- URL Editável para o Modelo 3D -->
+          <div class="editable model-url-input" id="url-meu">https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb</div>
+          <div class="ref-box" id="container-meu" style="padding: 0; position: relative;">
+            <!-- O Canvas 3D do Three.js entrará aqui -->
           </div>
         </section>
 
@@ -943,9 +942,11 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Referência de aparência</h3>
-          <div class="ref-box editable">
-            Desenho Lindo da mari
+          <h3 class="editable">Referência de aparência (3D)</h3>
+          <!-- URL Editável para o Modelo 3D -->
+          <div class="editable model-url-input" id="url-dela">https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb</div>
+          <div class="ref-box" id="container-dela" style="padding: 0; position: relative;">
+            <!-- O Canvas 3D do Three.js entrará aqui -->
           </div>
         </section>
 
@@ -976,10 +977,10 @@
       <button class="close-modal-btn" onclick="closeModals()">&times;</button>
       <h3>Acesso Restrito</h3>
       <div class="input-group">
-        <input type="text" id="usernameInput" placeholder="Usuário">
+        <input type="text" id="usernameInput" placeholder="Utilizador">
       </div>
       <div class="input-group">
-        <input type="password" id="passwordInput" placeholder="Senha">
+        <input type="password" id="passwordInput" placeholder="Palavra-passe">
       </div>
       <div class="modal-actions">
         <button class="btn" onclick="closeModals()">Cancelar</button>
@@ -988,7 +989,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE MENSAGENS (Substitui o alert padrão) -->
+  <!-- MODAL DE MENSAGENS -->
   <div id="msgModal" class="modal-overlay" style="z-index: 10000;">
     <div class="modal-box" style="text-align: center;">
       <h3 id="msgTitle">Mensagem</h3>
@@ -1000,10 +1001,18 @@
   <!-- PAINEL FLUTUANTE MODO EDIÇÃO -->
   <div id="editControlPanel" class="edit-control-panel">
     <span>Modo Edição Ativo</span>
-    <button class="btn pink" onclick="toggleEditMode()" style="padding: 8px 16px; font-size: 0.85rem;">Salvar & Sair</button>
+    <button class="btn pink" onclick="toggleEditMode()" style="padding: 8px 16px; font-size: 0.85rem;">Guardar & Sair</button>
   </div>
 
   <script>
+
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+// Substitui pelos teus dados que estão em Project Settings -> API no painel do Supabase
+const SUPABASE_URL = 'https://teu-projeto.supabase.co'
+const SUPABASE_KEY = 'tua-anon-key'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
     /* ==============================================
        LÓGICA ORIGINAL DO SITE
        ============================================== */
@@ -1013,7 +1022,7 @@
     }
 
     function openPage(page) {
-      // Se estiver editando, não deixa navegar pelo click nos cards para evitar bugs
+      // Se estiver editando, não deixa navegar pelo click nos cards
       if(isEditModeActive) return; 
 
       document.querySelectorAll('.page').forEach(section => section.classList.remove('active'));
@@ -1030,6 +1039,15 @@
       header.style.display = 'none';
       document.querySelector('#' + page).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Inicia o Render 3D quando a página de perfil é aberta
+      if (page === 'meu' || page === 'dela') {
+        setTimeout(() => {
+           const containerId = 'container-' + page;
+           const urlId = 'url-' + page;
+           init3D(containerId, document.getElementById(urlId).innerText.trim());
+        }, 100);
+      }
     }
 
     function startIntro() {
@@ -1060,64 +1078,117 @@
     }
 
     /* ==============================================
-       NOVA LÓGICA: CACHE DE 3 DIAS E BACKUP 6H
+       LÓGICA 3D: THREE.JS GLTF/GLB LOADER
        ============================================== */
-    const CACHE_EXPIRY = 3 * 24 * 60 * 60 * 1000; // 3 dias em milissegundos
-    const BACKUP_INTERVAL = 6 * 60 * 60 * 1000; // 6 horas em milissegundos
+    const models = {};
 
-    function saveToCache(isManual = false) {
-      const editables = document.querySelectorAll('.editable');
-      const data = Array.from(editables).map(el => el.innerHTML);
-      const now = Date.now();
+    function init3D(containerId, modelUrl) {
+      const container = document.getElementById(containerId);
+      if(!container) return;
+      container.innerHTML = ""; // Limpar canvas antigo
 
-      const cacheData = {
-        timestamp: now,
-        content: data
-      };
-
-      // Salva o cache principal (sobrevive ao F5)
-      localStorage.setItem('blast_mari_signa_data', JSON.stringify(cacheData));
-
-      // Lógica de Backup (a cada 6 horas)
-      const lastBackupStr = localStorage.getItem('blast_mari_signa_backup_time');
-      const lastBackupTime = lastBackupStr ? parseInt(lastBackupStr) : 0;
-
-      if (now - lastBackupTime >= BACKUP_INTERVAL) {
-        localStorage.setItem('blast_mari_signa_backup', JSON.stringify(cacheData));
-        localStorage.setItem('blast_mari_signa_backup_time', now.toString());
-        console.log("Backup automático realizado.");
+      // Verifica se o URL é de uma imagem normal (png, jpg, jpeg, gif, webp)
+      if (modelUrl.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i)) {
+        const img = document.createElement('img');
+        img.src = modelUrl;
+        img.className = 'ref-img';
+        container.appendChild(img);
+        return; // Termina aqui, mostrando apenas a imagem e ignorando o 3D
       }
-      
-      if (isManual) {
-        showMessage("Salvo!", "Suas edições estão no Cache (duram 3 dias e resistem ao F5).");
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.set(0, 1, 5);
+
+      const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(renderer.domElement);
+
+      const light = new THREE.AmbientLight(0xffffff, 1);
+      scene.add(light);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+      dirLight.position.set(5, 5, 5);
+      scene.add(dirLight);
+
+      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+
+      const loader = new THREE.GLTFLoader();
+      loader.load(modelUrl, (gltf) => {
+        const model = gltf.scene;
+        // Centralizar e ajustar tamanho base
+        const box = new THREE.Box3().setFromObject(model);
+        const center = box.getCenter(new THREE.Vector3());
+        model.position.sub(center);
+        scene.add(model);
+      }, undefined, (e) => console.error("Erro a carregar o modelo 3D:", e));
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
       }
+      animate();
+
+      models[containerId] = { scene, camera, renderer, controls };
     }
 
-    function loadFromCache() {
-      const cacheStr = localStorage.getItem('blast_mari_signa_data');
-      if (cacheStr) {
-        const cacheData = JSON.parse(cacheStr);
-        const now = Date.now();
+    // Redimensionar Canvas 3D
+    window.addEventListener('resize', () => {
+      Object.values(models).forEach(m => {
+        const container = m.renderer.domElement.parentElement;
+        if(!container) return;
+        m.camera.aspect = container.clientWidth / container.clientHeight;
+        m.camera.updateProjectionMatrix();
+        m.renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    });
 
-        // Verifica se passou dos 3 dias
-        if (now - cacheData.timestamp <= CACHE_EXPIRY) {
-          const editables = document.querySelectorAll('.editable');
-          cacheData.content.forEach((html, index) => {
-            if (editables[index]) {
-              editables[index].innerHTML = html;
-            }
+    /* ==============================================
+       NOVA LÓGICA: CACHE ETERNO E BACKUP 6H
+       ============================================== */
+    const BACKUP_INTERVAL = 6 * 60 * 60 * 1000; // 6 horas
+
+   // FUNÇÃO PARA GUARDAR NO SUPABASE
+    async function saveToSupabase() {
+      const editables = document.querySelectorAll('.editable');
+      
+      for (const el of editables) {
+        const content = el.classList.contains('model-url-input') ? el.innerText : el.innerHTML;
+        
+        await supabase
+          .from('site_content')
+          .upsert({ 
+             element_id: el.id, 
+             content: content 
           });
-        } else {
-          // Passou de 3 dias, limpa o cache
-          localStorage.removeItem('blast_mari_signa_data');
-        }
+      }
+      console.log("Dados salvos na nuvem!");
+    }
+    async function loadFromSupabase() {
+      const { data, error } = await supabase
+        .from('site_content')
+        .select('*')
+
+      if (data) {
+        data.forEach(row => {
+          const el = document.getElementById(row.element_id);
+          // Se for um elemento de texto normal
+          if (el && !el.classList.contains('model-url-input')) {
+            el.innerHTML = row.content;
+          } 
+          // Se for o link do modelo 3D/Foto
+          else if (el) {
+            el.innerText = row.content;
+          }
+        });
       }
     }
 
     let saveTimeout;
     function autoSave() {
       clearTimeout(saveTimeout);
-      // Salva automaticamente 1 segundo após você parar de digitar
+      // Salva automaticamente 1 segundo após parar de escrever
       saveTimeout = setTimeout(() => saveToCache(false), 1000);
     }
 
@@ -1132,10 +1203,10 @@
     });
 
     /* ==============================================
-       NOVA LÓGICA: LOGIN E MODO EDIÇÃO
+       LÓGICA: LOGIN E MODO EDIÇÃO
        ============================================== */
     
-    // Credenciais Padrão (Você pode alterar aqui)
+    // Credenciais Padrão (Pode alterar aqui)
     const ADMIN_USER = "admin";
     const ADMIN_PASS = "admin123";
     
@@ -1172,9 +1243,9 @@
       if (user === ADMIN_USER && pass === ADMIN_PASS) {
         closeModals();
         toggleEditMode();
-        showMessage("Acesso Liberado!", "Pode editar à vontade! O site salvará automaticamente enquanto você digita para você não perder nada se der F5.");
+        showMessage("Acesso Liberado!", "Pode editar à vontade! O site guardará automaticamente as informações no seu computador.");
       } else {
-        showMessage("Erro", "Usuário ou senha incorretos.");
+        showMessage("Erro", "Utilizador ou palavra-passe incorretos.");
       }
     }
 
@@ -1182,6 +1253,11 @@
       isEditModeActive = !isEditModeActive;
       const panel = document.getElementById('editControlPanel');
       const editables = document.querySelectorAll('.editable');
+
+      // Mostra ou esconde as caixas de URL dos modelos 3D
+      document.querySelectorAll('.model-url-input').forEach(el => {
+        el.style.display = isEditModeActive ? 'block' : 'none';
+      });
 
       if (isEditModeActive) {
         panel.classList.add('active');
@@ -1199,8 +1275,17 @@
           el.contentEditable = "false";
           el.removeEventListener('input', autoSave);
         });
+        
         // Salva manualmente ao fechar o painel
         saveToCache(true);
+
+        // Recarrega o modelo 3D atual caso tenham editado o URL
+        if (document.getElementById('meu').classList.contains('active')) {
+           init3D('container-meu', document.getElementById('url-meu').innerText.trim());
+        }
+        if (document.getElementById('dela').classList.contains('active')) {
+           init3D('container-dela', document.getElementById('url-dela').innerText.trim());
+        }
       }
     }
 
