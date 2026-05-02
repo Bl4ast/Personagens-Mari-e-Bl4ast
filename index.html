@@ -765,7 +765,6 @@
 <body>
   <div class="nebula"></div>
 
-  <!-- Cores das Estrelinhas -->
   <span class="falling-star" style="--x: 88%; --s: 8px; --c: #54b8ff; --d: 6s; --delay: 0s;"></span>
   <span class="falling-star" style="--x: 72%; --s: 6px; --c: #ff7bdc; --d: 7.5s; --delay: 1.1s;"></span>
   <span class="falling-star" style="--x: 58%; --s: 5px; --c: #ffffff; --d: 8s; --delay: 2.2s;"></span>
@@ -774,9 +773,12 @@
 
   <header id="home">
     <section class="hero">
-      <div class="badge"><span class="dot"></span> <span class="editable">Celestium Signa • SMP</span> </div>
-      <h1 class="editable">Duas <span class="gradient-text">Estrelas</span><br/>Caíram do Céu</h1>
-      <p class="subtitle editable">
+      <div class="badge">
+        <span class="dot"></span> 
+        <span class="editable" id="hero-badge">Celestium Signa • SMP</span> 
+      </div>
+      <h1 class="editable" id="hero-title">Duas <span class="gradient-text">Estrelas</span><br/>Caíram do Céu</h1>
+      <p class="subtitle editable" id="hero-subtitle">
         Mari POR FAVOR ESCREVA UM TEXTO BONITO AQUI
       </p>
 
@@ -790,16 +792,16 @@
   <main>
     <section id="personagens" class="home-page page active">
       <div class="section-title">
-        <h2 class="editable">Escolha uma estrela</h2>
-        <p class="editable">Clique em um personagem para abrir a página dele.</p>
+        <h2 class="editable" id="section-chars-title">Escolha uma estrela</h2>
+        <p class="editable" id="section-chars-desc">Clique em um personagem para abrir a página dele.</p>
       </div>
 
       <div class="cards">
         <article class="character-card blue-card" onclick="openPage('meu')">
           <div class="character-info">
-            <small class="editable">Personagem do Bl4ast</small>
-            <h3 class="editable">Irmão</h3>
-            <p class="editable">
+            <small class="editable" id="card-meu-tag">Personagem do Bl4ast</small>
+            <h3 class="editable" id="card-meu-name">Irmão</h3>
+            <p class="editable" id="card-meu-desc">
               Mari escreva um texto aqui para mim tbm.
             </p>
             <button class="btn blue">Abrir página</button>
@@ -808,9 +810,9 @@
 
         <article class="character-card pink-card" onclick="openPage('dela')">
           <div class="character-info">
-            <small class="editable">Mariroblox</small>
-            <h3 class="editable">Irmã</h3>
-            <p class="editable">
+            <small class="editable" id="card-dela-tag">Mariroblox</small>
+            <h3 class="editable" id="card-dela-name">Irmã</h3>
+            <p class="editable" id="card-dela-desc">
               Mari seu texto aqui tbm!
             </p>
             <button class="btn pink">Abrir página</button>
@@ -819,17 +821,16 @@
       </div>
     </section>
 
-    <!-- PÁGINA DO MEU PERSONAGEM -->
     <section id="meu" class="page blue-profile">
       <div class="topbar">
-        <strong class="editable">✦ Estrela Azul</strong>
+        <strong class="editable" id="meu-topbar-label">✦ Estrela Azul</strong>
         <button class="btn" onclick="openPage('home')">Voltar aos personagens</button>
       </div>
 
       <div class="profile-hero">
         <div>
-          <h2 class="editable">Nome do Meu Personagem</h2>
-          <p class="editable">
+          <h2 class="editable" id="meu-hero-name">Nome do Meu Personagem</h2>
+          <p class="editable" id="meu-hero-phrase">
             Me ajudar com uma frase que signifique o meu personagem
           </p>
         </div>
@@ -837,15 +838,10 @@
 
       <div class="grid">
         <section class="panel lore-panel">
-          <h3 class="editable">Lore</h3>
+          <h3 class="editable" id="meu-lore-title">Lore</h3>
 
           <div class="lore-text editable" id="loreMeu">
-            <p>
-              TEXTO TEXTO TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            </p>
-            <p>
-             TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO
-            </p>
+            <p>TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO</p>
           </div>
 
           <button class="show-more-btn" onclick="toggleLore('loreMeu', this)">
@@ -854,13 +850,13 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Playlist do Spotify OBS: Ta assim pq é Teste! </h3>
+          <h3 class="editable" id="meu-spotify-title">Playlist do Spotify</h3>
           <iframe class="spotify" src="https://open.spotify.com/embed/album/3SDU0tsnoMO841qeOHlP8B?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
 
         <section class="panel">
-          <h3 class="editable">Curiosidades</h3>
-          <ul class="editable">
+          <h3 class="editable" id="meu-curiosidades-title">Curiosidades</h3>
+          <ul class="editable" id="meu-curiosidades-list">
             <li>Fã da Mariroblox.</li>
             <li>Mono Riven no LOL.</li>
             <li>Ama Rock e Funk.</li>
@@ -869,39 +865,32 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Referência de aparência (3D)</h3>
-          <!-- URL Editável para o Modelo 3D -->
+          <h3 class="editable" id="meu-3d-title">Referência de aparência (3D)</h3>
           <div class="editable model-url-input" id="url-meu">https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb</div>
-          <div class="ref-box" id="container-meu" style="padding: 0; position: relative;">
-            <!-- O Canvas 3D do Three.js entrará aqui -->
-          </div>
+          <div class="ref-box" id="container-meu" style="padding: 0; position: relative;"></div>
         </section>
 
         <section class="panel">
-          <h3 class="editable">Paleta / Vibe</h3>
-          <div class="tags editable">
+          <h3 class="editable" id="meu-vibe-title">Paleta / Vibe</h3>
+          <div class="tags editable" id="meu-vibe-tags">
             <span class="tag">Azul celestial</span>
             <span class="tag">Preto profundo</span>
             <span class="tag">Branco estelar</span>
-            <span class="tag">Impulsivo</span>
-            <span class="tag">Hiperativo</span>
-            <span class="tag">Protetor</span>
           </div>
         </section>
       </div>
     </section>
 
-    <!-- PÁGINA DA PERSONAGEM DA MARI-->
     <section id="dela" class="page pink-profile">
       <div class="topbar">
-        <strong class="editable">✦ Estrela Rosa</strong>
+        <strong class="editable" id="dela-topbar-label">✦ Estrela Rosa</strong>
         <button class="btn" onclick="openPage('home')">Voltar aos personagens</button>
       </div>
 
       <div class="profile-hero">
         <div>
-          <h2 class="editable">Nome da Personagem da MARI</h2>
-          <p class="editable">
+          <h2 class="editable" id="dela-hero-name">Nome da Personagem da MARI</h2>
+          <p class="editable" id="dela-hero-phrase">
             ESCREVA ALGO AQUI SEU
           </p>
         </div>
@@ -909,15 +898,10 @@
 
       <div class="grid">
         <section class="panel lore-panel">
-          <h3 class="editable">Lore</h3>
+          <h3 class="editable" id="dela-lore-title">Lore</h3>
 
           <div class="lore-text editable" id="loreMari">
-            <p>
-              TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO 
-            </p>
-            <p>
-              TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO  TEXTO TEXTO
-            </p>
+            <p>TEXTO TEXTO TEXTO TEXTO TEXTO TEXTO</p>
           </div>
 
           <button class="show-more-btn" onclick="toggleLore('loreMari', this)">
@@ -926,14 +910,13 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Playlist do Spotify OBS: Teste depois isso vai mudar</h3>
-          <!-- Spo da Mari -->
+          <h3 class="editable" id="dela-spotify-title">Playlist do Spotify</h3>
           <iframe class="spotify" src="https://open.spotify.com/embed/playlist/37i9dQZF1DX6ziVCJnEm59?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
         </section>
 
         <section class="panel">
-          <h3 class="editable">Curiosidades</h3>
-          <ul class="editable">
+          <h3 class="editable" id="dela-curiosidades-title">Curiosidades</h3>
+          <ul class="editable" id="dela-curiosidades-list">
             <li>Ama muito seu amigo Bl4ast.</li>
             <li>Sabe desenhar.</li>
             <li>Joga LOL.</li>
@@ -942,87 +925,40 @@
         </section>
 
         <section class="panel">
-          <h3 class="editable">Referência de aparência (3D)</h3>
-          <!-- URL Editável para o Modelo 3D -->
+          <h3 class="editable" id="dela-3d-title">Referência de aparência (3D)</h3>
           <div class="editable model-url-input" id="url-dela">https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb</div>
-          <div class="ref-box" id="container-dela" style="padding: 0; position: relative;">
-            <!-- O Canvas 3D do Three.js entrará aqui -->
-          </div>
+          <div class="ref-box" id="container-dela" style="padding: 0; position: relative;"></div>
         </section>
 
         <section class="panel">
-          <h3 class="editable">Paleta / Vibe</h3>
-          <div class="tags editable">
+          <h3 class="editable" id="dela-vibe-title">Paleta / Vibe</h3>
+          <div class="tags editable" id="dela-vibe-tags">
             <span class="tag">Rosa cósmico</span>
             <span class="tag">Branco brilhante</span>
             <span class="tag">Preto céu</span>
-            <span class="tag">Mari</span>
-            <span class="tag">Mari</span>
-            <span class="tag">Mari</span>
           </div>
         </section>
       </div>
     </section>
   </main>
 
-  <footer>
-    <p>Informações dos nossos personagens ✦</p>
-    <!-- Botão de Administração que abre o Modal de Login -->
-    <button class="btn" onclick="openLoginModal()" style="padding: 8px 16px; font-size: 0.8rem; background: rgba(255,255,255,0.05);">Painel de Edição</button>
-  </footer>
-
-  <!-- MODAL DE LOGIN -->
-  <div id="loginModal" class="modal-overlay">
-    <div class="modal-box">
-      <button class="close-modal-btn" onclick="closeModals()">&times;</button>
-      <h3>Acesso Restrito</h3>
-      <div class="input-group">
-        <input type="text" id="usernameInput" placeholder="Utilizador">
-      </div>
-      <div class="input-group">
-        <input type="password" id="passwordInput" placeholder="Palavra-passe">
-      </div>
-      <div class="modal-actions">
-        <button class="btn" onclick="closeModals()">Cancelar</button>
-        <button class="btn blue" onclick="verifyLogin()">Entrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL DE MENSAGENS -->
-  <div id="msgModal" class="modal-overlay" style="z-index: 10000;">
-    <div class="modal-box" style="text-align: center;">
-      <h3 id="msgTitle">Mensagem</h3>
-      <p id="msgText" style="margin-bottom: 25px; color: var(--muted);"></p>
-      <button class="btn" onclick="closeMsgModal()">OK</button>
-    </div>
-  </div>
-
-  <!-- PAINEL FLUTUANTE MODO EDIÇÃO -->
-  <div id="editControlPanel" class="edit-control-panel">
-    <span>Modo Edição Ativo</span>
-    <button class="btn pink" onclick="toggleEditMode()" style="padding: 8px 16px; font-size: 0.85rem;">Guardar & Sair</button>
-  </div>
-
-  <script>
-
+  <script type="module">
+    // 1. IMPORTAÇÃO E CONFIGURAÇÃO
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-// Substitui pelos teus dados que estão em Project Settings -> API no painel do Supabase
-const SUPABASE_URL = 'https://teu-projeto.supabase.co'
-const SUPABASE_KEY = 'tua-anon-key'
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+    const SUPABASE_URL = 'https://teu-projeto.supabase.co' // <--- SUBSTITUI PELO TEU URL
+    const SUPABASE_KEY = 'tua-anon-key'                    // <--- SUBSTITUI PELA TUA KEY
+    const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
     /* ==============================================
-       LÓGICA ORIGINAL DO SITE
+       LÓGICA ORIGINAL (ANEXADA AO WINDOW)
        ============================================== */
-    function showCharacters() {
+    window.showCharacters = function() {
       document.querySelector('main').style.display = 'block';
       document.querySelector('#personagens').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function openPage(page) {
-      // Se estiver editando, não deixa navegar pelo click nos cards
+    window.openPage = function(page) {
       if(isEditModeActive) return; 
 
       document.querySelectorAll('.page').forEach(section => section.classList.remove('active'));
@@ -1040,17 +976,17 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
       document.querySelector('#' + page).classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Inicia o Render 3D quando a página de perfil é aberta
       if (page === 'meu' || page === 'dela') {
         setTimeout(() => {
            const containerId = 'container-' + page;
            const urlId = 'url-' + page;
-           init3D(containerId, document.getElementById(urlId).innerText.trim());
+           const urlEl = document.getElementById(urlId);
+           if(urlEl) init3D(containerId, urlEl.innerText.trim());
         }, 100);
       }
     }
 
-    function startIntro() {
+    window.startIntro = function() {
       for (let i = 0; i < 14; i++) {
         const star = document.createElement('span');
         star.className = 'falling-star';
@@ -1061,39 +997,32 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
         star.style.setProperty('--d', (2.8 + Math.random() * 2.2) + 's');
         star.style.setProperty('--delay', (Math.random() * .45) + 's');
         document.body.appendChild(star);
-
         setTimeout(() => star.remove(), 6500);
       }
     }
 
-    function toggleLore(id, button) {
+    window.toggleLore = function(id, button) {
       const lore = document.getElementById(id);
       lore.classList.toggle('open');
-
-      if (lore.classList.contains('open')) {
-        button.textContent = 'Mostrar menos';
-      } else {
-        button.textContent = 'Mostrar mais';
-      }
+      button.textContent = lore.classList.contains('open') ? 'Mostrar menos' : 'Mostrar mais';
     }
 
     /* ==============================================
-       LÓGICA 3D: THREE.JS GLTF/GLB LOADER
+       LÓGICA 3D
        ============================================== */
     const models = {};
 
     function init3D(containerId, modelUrl) {
       const container = document.getElementById(containerId);
       if(!container) return;
-      container.innerHTML = ""; // Limpar canvas antigo
+      container.innerHTML = ""; 
 
-      // Verifica se o URL é de uma imagem normal (png, jpg, jpeg, gif, webp)
       if (modelUrl.match(/\.(jpeg|jpg|gif|png|webp)(\?.*)?$/i)) {
         const img = document.createElement('img');
         img.src = modelUrl;
         img.className = 'ref-img';
         container.appendChild(img);
-        return; // Termina aqui, mostrando apenas a imagem e ignorando o 3D
+        return;
       }
 
       const scene = new THREE.Scene();
@@ -1116,12 +1045,11 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
       const loader = new THREE.GLTFLoader();
       loader.load(modelUrl, (gltf) => {
         const model = gltf.scene;
-        // Centralizar e ajustar tamanho base
         const box = new THREE.Box3().setFromObject(model);
         const center = box.getCenter(new THREE.Vector3());
         model.position.sub(center);
         scene.add(model);
-      }, undefined, (e) => console.error("Erro a carregar o modelo 3D:", e));
+      }, undefined, (e) => console.error("Erro no 3D:", e));
 
       function animate() {
         requestAnimationFrame(animate);
@@ -1129,157 +1057,109 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
         renderer.render(scene, camera);
       }
       animate();
-
-      models[containerId] = { scene, camera, renderer, controls };
+      models[containerId] = { renderer, camera };
     }
-
-    // Redimensionar Canvas 3D
-    window.addEventListener('resize', () => {
-      Object.values(models).forEach(m => {
-        const container = m.renderer.domElement.parentElement;
-        if(!container) return;
-        m.camera.aspect = container.clientWidth / container.clientHeight;
-        m.camera.updateProjectionMatrix();
-        m.renderer.setSize(container.clientWidth, container.clientHeight);
-      });
-    });
 
     /* ==============================================
-       NOVA LÓGICA: CACHE ETERNO E BACKUP 6H
+       LÓGICA SUPABASE (CARREGAR E SALVAR)
        ============================================== */
-    const BACKUP_INTERVAL = 6 * 60 * 60 * 1000; // 6 horas
-
-   // FUNÇÃO PARA GUARDAR NO SUPABASE
-    async function saveToSupabase() {
-      const editables = document.querySelectorAll('.editable');
-      
-      for (const el of editables) {
-        const content = el.classList.contains('model-url-input') ? el.innerText : el.innerHTML;
-        
-        await supabase
-          .from('site_content')
-          .upsert({ 
-             element_id: el.id, 
-             content: content 
-          });
-      }
-      console.log("Dados salvos na nuvem!");
-    }
+    
     async function loadFromSupabase() {
-      const { data, error } = await supabase
-        .from('site_content')
-        .select('*')
-
+      const { data, error } = await supabase.from('site_content').select('*');
       if (data) {
         data.forEach(row => {
           const el = document.getElementById(row.element_id);
-          // Se for um elemento de texto normal
-          if (el && !el.classList.contains('model-url-input')) {
-            el.innerHTML = row.content;
-          } 
-          // Se for o link do modelo 3D/Foto
-          else if (el) {
-            el.innerText = row.content;
+          if (el) {
+            if (el.classList.contains('model-url-input')) {
+              el.innerText = row.content;
+            } else {
+              el.innerHTML = row.content;
+            }
           }
         });
       }
     }
 
-    let saveTimeout;
-    function autoSave() {
-      clearTimeout(saveTimeout);
-      // Salva automaticamente 1 segundo após parar de escrever
-      saveTimeout = setTimeout(() => saveToCache(false), 1000);
+    async function saveToSupabase() {
+      const editables = document.querySelectorAll('.editable');
+      for (const el of editables) {
+        if (!el.id) continue; // Pula se não tiver ID
+        
+        const content = el.classList.contains('model-url-input') ? el.innerText : el.innerHTML;
+        
+        await supabase.from('site_content').upsert({ 
+          element_id: el.id, 
+          content: content 
+        });
+      }
+      console.log("Sincronizado com Supabase!");
     }
 
-    // Checa a cada 1 hora se precisa fazer o backup
-    setInterval(() => {
-        saveToCache(false);
-    }, 60 * 60 * 1000);
-
-    window.addEventListener('load', () => {
-      loadFromCache(); // Carrega os dados salvos antes da animação
-      setTimeout(startIntro, 350);
-    });
-
     /* ==============================================
-       LÓGICA: LOGIN E MODO EDIÇÃO
+       LOGIN E MODO EDIÇÃO
        ============================================== */
-    
-    // Credenciais Padrão (Pode alterar aqui)
     const ADMIN_USER = "admin";
     const ADMIN_PASS = "admin123";
-    
-    let isEditModeActive = false;
+    window.isEditModeActive = false;
 
-    function showMessage(title, text) {
+    window.showMessage = function(title, text) {
       document.getElementById('msgTitle').innerText = title;
       document.getElementById('msgText').innerText = text;
       document.getElementById('msgModal').classList.add('active');
     }
 
-    function closeMsgModal() {
+    window.closeMsgModal = function() {
       document.getElementById('msgModal').classList.remove('active');
     }
 
-    function openLoginModal() {
-      if (isEditModeActive) {
-        showMessage("Aviso", "O modo de edição já está ativo.");
-        return;
-      }
+    window.openLoginModal = function() {
+      if (window.isEditModeActive) return;
       document.getElementById('loginModal').classList.add('active');
-      document.getElementById('usernameInput').value = "";
-      document.getElementById('passwordInput').value = "";
     }
 
-    function closeModals() {
+    window.closeModals = function() {
       document.getElementById('loginModal').classList.remove('active');
     }
 
-    function verifyLogin() {
+    window.verifyLogin = function() {
       const user = document.getElementById('usernameInput').value;
       const pass = document.getElementById('passwordInput').value;
 
       if (user === ADMIN_USER && pass === ADMIN_PASS) {
         closeModals();
         toggleEditMode();
-        showMessage("Acesso Liberado!", "Pode editar à vontade! O site guardará automaticamente as informações no seu computador.");
       } else {
-        showMessage("Erro", "Utilizador ou palavra-passe incorretos.");
+        showMessage("Erro", "Login incorreto.");
       }
     }
 
-    function toggleEditMode() {
-      isEditModeActive = !isEditModeActive;
+    window.toggleEditMode = async function() {
+      window.isEditModeActive = !window.isEditModeActive;
       const panel = document.getElementById('editControlPanel');
       const editables = document.querySelectorAll('.editable');
 
-      // Mostra ou esconde as caixas de URL dos modelos 3D
       document.querySelectorAll('.model-url-input').forEach(el => {
-        el.style.display = isEditModeActive ? 'block' : 'none';
+        el.style.display = window.isEditModeActive ? 'block' : 'none';
       });
 
-      if (isEditModeActive) {
+      if (window.isEditModeActive) {
         panel.classList.add('active');
         editables.forEach(el => {
           el.classList.add('editing');
-          // Permite editar o conteúdo interno do HTML
           el.contentEditable = "true"; 
-          // Ativa o Auto-Save
-          el.addEventListener('input', autoSave);
         });
       } else {
         panel.classList.remove('active');
         editables.forEach(el => {
           el.classList.remove('editing');
           el.contentEditable = "false";
-          el.removeEventListener('input', autoSave);
         });
         
-        // Salva manualmente ao fechar o painel
-        saveToCache(true);
+        // SALVA NO SUPABASE AO SAIR
+        await saveToSupabase();
+        showMessage("Sucesso", "Alterações salvas para todos!");
 
-        // Recarrega o modelo 3D atual caso tenham editado o URL
+        // Recarrega o 3D/Foto
         if (document.getElementById('meu').classList.contains('active')) {
            init3D('container-meu', document.getElementById('url-meu').innerText.trim());
         }
@@ -1289,6 +1169,21 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
       }
     }
 
-  </script>
+    // INICIALIZAÇÃO
+    window.addEventListener('load', () => {
+      loadFromSupabase(); 
+      setTimeout(window.startIntro, 350);
+    });
+
+    window.addEventListener('resize', () => {
+      Object.values(models).forEach(m => {
+        const container = m.renderer.domElement.parentElement;
+        if(!container) return;
+        m.camera.aspect = container.clientWidth / container.clientHeight;
+        m.camera.updateProjectionMatrix();
+        m.renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    });
+</script>
 </body>
 </html>
