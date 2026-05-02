@@ -941,17 +941,54 @@
       </div>
     </section>
   </main>
+    <footer>
+    <p>Informações dos nossos personagens ✦</p>
+    <button class="btn" id="admin-btn" onclick="openLoginModal()" style="padding: 8px 16px; font-size: 0.8rem; background: rgba(255,255,255,0.05);">Painel de Edição</button>
+  </footer>
 
-  <script type="module">
-    // 1. IMPORTAÇÃO E CONFIGURAÇÃO
+  <div id="loginModal" class="modal-overlay">
+    <div class="modal-box">
+      <button class="close-modal-btn" onclick="closeModals()">×</button>
+      <h3>Acesso Restrito</h3>
+      <div class="input-group">
+        <input type="text" id="usernameInput" placeholder="Utilizador">
+      </div>
+      <div class="input-group">
+        <input type="password" id="passwordInput" placeholder="Palavra-passe">
+      </div>
+      <div class="modal-actions">
+        <button class="btn" onclick="closeModals()">Cancelar</button>
+        <button class="btn blue" onclick="verifyLogin()">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="msgModal" class="modal-overlay" style="z-index: 10000;">
+    <div class="modal-box" style="text-align: center;">
+      <h3 id="msgTitle">Mensagem</h3>
+      <p id="msgText" style="margin-bottom: 25px; color: var(--muted);"></p>
+      <button class="btn" onclick="closeMsgModal()">OK</button>
+    </div>
+  </div>
+
+  <div id="editControlPanel" class="edit-control-panel">
+    <span>Modo Edição Ativo</span>
+    <button class="btn pink" onclick="toggleEditMode()" style="padding: 8px 16px; font-size: 0.85rem;">Guardar & Sair</button>
+  </div>
+
+
+
+<script type="module">
+    // 1. IMPORTAÇÃO E CONFIGURAÇÃO DO SUPABASE
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
-    const SUPABASE_URL = 'https://teu-projeto.supabase.co' // <--- SUBSTITUI PELO TEU URL
-    const SUPABASE_KEY = 'tua-anon-key'                    // <--- SUBSTITUI PELA TUA KEY
+    // COLOQUE SEUS DADOS REAIS AQUI
+    const SUPABASE_URL = 'https://teu-projeto.supabase.co' 
+    const SUPABASE_KEY = 'tua-anon-key'
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
 
     /* ==============================================
-       LÓGICA ORIGINAL (ANEXADA AO WINDOW)
+       FUNÇÕES DE NAVEGAÇÃO E INTERAÇÃO (ANEXADAS AO WINDOW)
        ============================================== */
     window.showCharacters = function() {
       document.querySelector('main').style.display = 'block';
@@ -959,7 +996,7 @@
     }
 
     window.openPage = function(page) {
-      if(isEditModeActive) return; 
+      if(window.isEditModeActive) return; 
 
       document.querySelectorAll('.page').forEach(section => section.classList.remove('active'));
       const header = document.querySelector('header');
@@ -1008,7 +1045,7 @@
     }
 
     /* ==============================================
-       LÓGICA 3D
+       LÓGICA 3D (THREE.JS)
        ============================================== */
     const models = {};
 
@@ -1061,56 +1098,41 @@
     }
 
     /* ==============================================
-       LÓGICA SUPABASE (CARREGAR E SALVAR)
+       LÓGICA SUPABASE (SAVE / LOAD)
        ============================================== */
-    
     async function loadFromSupabase() {
-      const { data, error } = await supabase.from('site_content').select('*');
-      if (data) {
-        data.forEach(row => {
-          const el = document.getElementById(row.element_id);
-          if (el) {
-            if (el.classList.contains('model-url-input')) {
-              el.innerText = row.content;
-            } else {
-              el.innerHTML = row.content;
+      try {
+        const { data, error } = await supabase.from('site_content').select('*');
+        if (data) {
+          data.forEach(row => {
+            const el = document.getElementById(row.element_id);
+            if (el) {
+              if (el.classList.contains('model-url-input')) {
+                el.innerText = row.content;
+              } else {
+                el.innerHTML = row.content;
+              }
             }
-          }
-        });
-      }
+          });
+        }
+      } catch (e) { console.warn("Supabase ainda não configurado corretamente."); }
     }
 
     async function saveToSupabase() {
       const editables = document.querySelectorAll('.editable');
       for (const el of editables) {
-        if (!el.id) continue; // Pula se não tiver ID
-        
+        if (!el.id) continue;
         const content = el.classList.contains('model-url-input') ? el.innerText : el.innerHTML;
-        
-        await supabase.from('site_content').upsert({ 
-          element_id: el.id, 
-          content: content 
-        });
+        await supabase.from('site_content').upsert({ element_id: el.id, content: content });
       }
-      console.log("Sincronizado com Supabase!");
     }
 
     /* ==============================================
-       LOGIN E MODO EDIÇÃO
+       SISTEMA DE LOGIN E EDIÇÃO (FIXED FOR MODULES)
        ============================================== */
+    window.isEditModeActive = false;
     const ADMIN_USER = "admin";
     const ADMIN_PASS = "admin123";
-    window.isEditModeActive = false;
-
-    window.showMessage = function(title, text) {
-      document.getElementById('msgTitle').innerText = title;
-      document.getElementById('msgText').innerText = text;
-      document.getElementById('msgModal').classList.add('active');
-    }
-
-    window.closeMsgModal = function() {
-      document.getElementById('msgModal').classList.remove('active');
-    }
 
     window.openLoginModal = function() {
       if (window.isEditModeActive) return;
@@ -1121,15 +1143,25 @@
       document.getElementById('loginModal').classList.remove('active');
     }
 
+    window.closeMsgModal = function() {
+      document.getElementById('msgModal').classList.remove('active');
+    }
+
+    window.showMessage = function(title, text) {
+      document.getElementById('msgTitle').innerText = title;
+      document.getElementById('msgText').innerText = text;
+      document.getElementById('msgModal').classList.add('active');
+    }
+
     window.verifyLogin = function() {
       const user = document.getElementById('usernameInput').value;
       const pass = document.getElementById('passwordInput').value;
 
       if (user === ADMIN_USER && pass === ADMIN_PASS) {
-        closeModals();
-        toggleEditMode();
+        window.closeModals();
+        window.toggleEditMode();
       } else {
-        showMessage("Erro", "Login incorreto.");
+        window.showMessage("Erro", "Login incorreto.");
       }
     }
 
@@ -1155,11 +1187,10 @@
           el.contentEditable = "false";
         });
         
-        // SALVA NO SUPABASE AO SAIR
         await saveToSupabase();
-        showMessage("Sucesso", "Alterações salvas para todos!");
+        window.showMessage("Sucesso", "Alterações salvas para todos!");
 
-        // Recarrega o 3D/Foto
+        // Recarrega visuais
         if (document.getElementById('meu').classList.contains('active')) {
            init3D('container-meu', document.getElementById('url-meu').innerText.trim());
         }
@@ -1169,7 +1200,7 @@
       }
     }
 
-    // INICIALIZAÇÃO
+    // Inicialização ao carregar
     window.addEventListener('load', () => {
       loadFromSupabase(); 
       setTimeout(window.startIntro, 350);
